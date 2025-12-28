@@ -1,4 +1,5 @@
 import React from 'react';
+import cn from 'classnames';
 import { Todo } from '../../types/Todo';
 
 type Props = {
@@ -25,26 +26,27 @@ export const TodoList: React.FC<Props> = ({
         <th> </th>
       </tr>
     </thead>
-
     <tbody>
       {todos.map(todo => (
         <tr
           key={todo.id}
           data-cy="todo"
-          className={todo.completed ? 'has-background-info-light' : ''}
+          className={cn({ 'has-background-info-light': todo.completed })}
         >
           <td className="is-vcentered">{todo.id}</td>
-          <td className="is-vcentered" />
-          {todo.completed && (
-            <span className="icon" data-cy="iconCompleted">
-              <i className="fas fa-check" />
-            </span>
-          )}
+          <td className="is-vcentered">
+            {todo.completed && (
+              <span className="icon" data-cy="iconCompleted">
+                <i className="fas fa-check" />
+              </span>
+            )}
+          </td>
           <td className="is-vcentered is-expanded">
             <p
-              className={
-                todo.completed ? 'has-text-success' : 'has-text-danger'
-              }
+              className={cn({
+                'has-text-success': todo.completed,
+                'has-text-danger': !todo.completed,
+              })}
             >
               {todo.title}
             </p>
@@ -60,7 +62,10 @@ export const TodoList: React.FC<Props> = ({
             >
               <span className="icon">
                 <i
-                  className={`far ${selectedTodoId === todo.id ? 'fa-eye-slash' : 'fa-eye'}`}
+                  className={cn('far', {
+                    'fa-eye-slash': selectedTodoId === todo.id,
+                    'fa-eye': selectedTodoId !== todo.id,
+                  })}
                 />
               </span>
               <span>{selectedTodoId === todo.id ? 'Hide' : 'Show'}</span>

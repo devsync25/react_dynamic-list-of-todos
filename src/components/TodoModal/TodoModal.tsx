@@ -1,4 +1,5 @@
 import React from 'react';
+import cn from 'classnames';
 import { Todo } from '../../types/Todo';
 import { User } from '../../types/User';
 import { Loader } from '../Loader';
@@ -20,7 +21,7 @@ export const TodoModal: React.FC<Props> = ({
     <div className="modal-background" onClick={onClose} />
     <div className="modal-card">
       <header className="modal-card-head">
-        <p className="modal-card-title" data-cy="modal-title">
+        <p className="modal-card-title" data-cy="modal-header">
           Todo #{todo.id}
         </p>
         <button
@@ -35,13 +36,16 @@ export const TodoModal: React.FC<Props> = ({
           <Loader />
         ) : (
           <>
-            <p className="title is-4">{todo.title}</p>
+            <p className="title is-4" data-cy="modal-title">
+              {todo.title}
+            </p>
             {user && (
-              <p>
+              <p data-cy="modal-user">
                 <strong
-                  className={
-                    todo.completed ? 'has-text-success' : 'has-text-danger'
-                  }
+                  className={cn({
+                    'has-text-success': todo.completed,
+                    'has-text-danger': !todo.completed,
+                  })}
                 >
                   {todo.completed ? 'Done' : 'Planned'}
                 </strong>
